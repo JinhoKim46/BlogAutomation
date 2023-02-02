@@ -4,16 +4,18 @@ from api_webflow import Webflow
 
 import utils
 
+# Get config
 config = utils.read_config("Z:\Personal\Projects\BlogAutomation\config.json")
+# Get openai api
 openai = Openai(config['openai'])
+# Get notion api
 notion = Notion(config['notion'])
-
-webflow_tags = Webflow('tags')
-webflow_categories = Webflow('categories')
-
 contents = notion.readDatebase(db='contents')
 categories = notion.readDatebase(db='category')
 tags = notion.readDatebase(db='tags')
+# Get webflow api
+webflow_tags = Webflow(config['webflow'], 'tags')
+webflow_categories = Webflow(config['webflow'], 'categories')
 
 print("Start blog posts generation!!\n")
 for page in contents:

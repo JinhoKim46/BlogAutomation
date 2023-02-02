@@ -2,17 +2,19 @@ import utils
 from api_notion import Notion
 from api_webflow import Webflow
 
+# Get config
 config = utils.read_config("Z:\Personal\Projects\BlogAutomation\config.json")
-
+# Get notion api
 notion = Notion(config['notion'])
 contents = notion.readDatebase(db='contents')
 categories = notion.readDatebase(db='categories')
 tags = notion.readDatebase(db='tags')
-
+# Get webflow api
 webflow_contents = Webflow(config['webflow'], 'contents')
 webflow_tags = Webflow(config['webflow'], 'tags')
 webflow_categories = Webflow(config['webflow'], 'categories')
 
+print("Start to upload blog posts!!")
 for page in contents:
     if not notion.getFeatured(page):
         title = notion.getTitle(page)
