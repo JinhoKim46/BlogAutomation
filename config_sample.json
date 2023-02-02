@@ -1,0 +1,19 @@
+{
+  "token_notion": "Your Notion Token",
+  "contentsID": "Notion Database contentsID",
+  "tagsID": "Notion Database tagsID",
+  "categoryID": "Notion Database categoryID",
+  "token_openAI": "Your OpenAI Token",
+  "token_webflow": "Your Webflow Token",
+  "domain": "Your Webflow Domain",
+  "count": 2,
+
+  "=========": "==============================================================",
+  "How_to_get_APIs": {
+    "Notion": "https://developers.notion.com/docs/create-a-notion-integration",
+    "openAI": "https://beta.openai.com/account/api-keys",
+    "Webflow": "Setting -> Integration -> API generation"
+  },
+  "_count": "How many items to be uploaded",
+  "==========": "=============================================================="
+}
