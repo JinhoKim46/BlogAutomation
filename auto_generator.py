@@ -4,8 +4,9 @@ from api_webflow import Webflow
 
 import utils
 
-openai = Openai()
-notion = Notion()
+config = utils.read_config("Z:\Personal\Projects\BlogAutomation\config.json")
+openai = Openai(config['openai'])
+notion = Notion(config['notion'])
 
 webflow_tags = Webflow('tags')
 webflow_categories = Webflow('categories')
@@ -59,13 +60,19 @@ for page in contents:
 print("Generating blog posts is done!")
 print("Start to create tags and categories in Webflow")
 for page in tags:
-    tag = notion.getName(page)
-    item_id = webflow_tags.createItem(title=tag)
-    notion.updateProperty(page['id'], 'Webflow item ID', 'text', item_id)
-    notion.updateProperty(page['id'], "Featured", 'checkbox', True)
+    if not notion.getFeatured(page):
+        tag = notion.getName(page)
+        print(f" Uploading Tag: {tag} ... ")
+        item_id = webflow_tags.createItem(title=tag)
+        notion.updateProperty(page['id'], 'Webflow item ID', 'text', item_id)
+        notion.updateProperty(page['id'], "Featured", 'checkbox', True)
+        print("  Done!\n")
 
 for page in categories:
-    category = notion.getName(page)
-    item_id = webflow_categories.createItem(title=category)
-    notion.updateProperty(page['id'], 'Webflow item ID', 'text', item_id)
-    notion.updateProperty(page['id'], "Featured", 'checkbox', True)
+    if not notion.getFeatured(page):
+        category = notion.getName(page)
+        print(f" Uploading Tag: {category} ... ")
+        item_id = webflow_categories.createItem(title=category)
+        notion.updateProperty(page['id'], 'Webflow item ID', 'text', item_id)
+        notion.updateProperty(page['id'], "Featured", 'checkbox', True)
+        print("  Done!\n")

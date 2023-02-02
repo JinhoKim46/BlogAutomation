@@ -2,15 +2,16 @@ import utils
 from api_notion import Notion
 from api_webflow import Webflow
 
-notion = Notion()
+config = utils.read_config("Z:\Personal\Projects\BlogAutomation\config.json")
 
-webflow_contents = Webflow('contents')
-webflow_tags = Webflow('tags')
-webflow_categories = Webflow('categories')
-
+notion = Notion(config['notion'])
 contents = notion.readDatebase(db='contents')
 categories = notion.readDatebase(db='categories')
 tags = notion.readDatebase(db='tags')
+
+webflow_contents = Webflow(config['webflow'], 'contents')
+webflow_tags = Webflow(config['webflow'], 'tags')
+webflow_categories = Webflow(config['webflow'], 'categories')
 
 for page in contents:
     if not notion.getFeatured(page):
