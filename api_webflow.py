@@ -1,10 +1,11 @@
 import requests
 from markdown import markdown
 
+
 class Webflow:
-    def __init__(self, config, type="contents"):
+    def __init__(self, config, cms_type="contents"):
         self.config = config
-        self.type = type
+        self.cms_type = cms_type
         self.token = self.getToken()
         self.headers = self.getHeaders()
         self.siteID = self.getSiteId()
@@ -15,11 +16,8 @@ class Webflow:
         self.cnt = self.getCount()
         self.updated_cnt = 0
 
-    def getInfo(self):
-        print(f"This Webflow class is for {self.type}")
-
     def getToken(self):
-        token = self.config['token_webflow']
+        token = self.config['token']
         return token
 
     def getHeaders(self):
@@ -57,7 +55,7 @@ class Webflow:
         collections_json = collections.json()
         collections_dict = {i['name']: i['_id'] for i in collections_json}
 
-        cms = f"Blog_{self.type}"
+        cms = f"Blog_{self.cms_type}"
         return collections_dict[cms]
 
     def getCollection(self):
@@ -113,7 +111,7 @@ class Webflow:
         _ = requests.request('PATCH', url, json=payload, headers=self.headers)
 
     def createDataJson(self, kwargs):
-        if self.type == 'contents':
+        if self.cms_type == 'contents':
             data = {
                 "fields": {
                     "slug": "",

@@ -7,7 +7,7 @@ class Openai:
         self.model = 'text-davinci-003'
 
     def getToken(self):
-        token = self.config['token_openai']
+        token = self.config['token']
         return token
 
     def run(self, target, max_tokens=256, temperature=0.8, prompt=None, **kwargs):
@@ -32,26 +32,29 @@ class Openai:
         return output
 
     def getPromptBody(self, title, category):
-        prompt_body = f'''My blog will give readers useful information regarding lifestyle, health, and IT. I don't want my blog to be one of the ordinary blogs but rather very funny and useful so that many people can visit my blog and earn a lot of useful information. 
-            Write a blog about "{title}" Its category is {category}. 
+        prompt_body = f''' 
+            Write a blog post about "{title}." Its category is {category}. 
             Write a blog article of around 2000 words in the markdown format, and include subtitles and detailed descriptions, but do not include the main title.
             '''
         return prompt_body
 
     def getPromptSummary(self, body):
-        prompt_summary = f"""Please generate a summary of this article below in one sentence within 20 words.
-        The article to summarize:
+        prompt_summary = f"""
+        First, read the blog post below.
         {body}
+        
+        Then, generate a summary of the article in one sentence within 20 words.        
             """
         return prompt_summary
 
     def getPromptTags(self, summary, tags):
         tag_names = [i['properties']["Name"]['title'][0]['text']['content'] for i in tags]
-        prompt_tags = f"""First, read the blog below
+        prompt_tags = f"""
+        First, read the blog below.
         {summary}
         
-        Then, choose 3 best tags from the list below. Your much choose tags only in the list below.
-        {tag_names}
+        Then, choose 3 best tags from the list [{tag_names}]. 
+        You must choose tags only in the given list.        
         
         Return your choices with a comma separation. 
             """
@@ -59,8 +62,7 @@ class Openai:
 
     def getPromptImage(self, title, summary):
         prompt_image = f"""
-        Read {title} and {summary} first. 
-        The first is the title of the blog post, and the other is the summary of the post.
+        Read the tile of the blog, "{title}" and its summary, "{summary}" first.
         
         [INFO: Use the Unsplash API (https://source.unsplash.com/1600x900/?<PUT YOUR QUERY HERE>). 
         The query is tags that describe the title and the summary very well. 
@@ -72,12 +74,12 @@ class Openai:
 
     def getPromptThumbnail(self, title):
         prompt_image = f"""
-        Read the blog title: {title} first.
+        This is a blog title, "{title}."
 
         [INFO: Use the Unsplash API (https://source.unsplash.com/1600x900/?<PUT YOUR QUERY HERE>). 
         The query is tags that describe the aforementioned title very well. 
         Each tag consists of only one word.
-        Reorder the query in descending order in terms of importance.
+        Reorder the query in descending order in terms of importance related to the title.
         Write the final image URL.] ## DO NOT RESPOND TO INFO BLOCK ##
             """
         return prompt_image
