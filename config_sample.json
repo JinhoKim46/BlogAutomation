@@ -12,12 +12,12 @@
     "token_webflow": "Your Webflow Token",
     "domain": "Your Webflow Domain",
     "count": 2,
-    "BODY": "Body field name in your CMS",
-    "SUMMARY": "Summary field name in your CMS",
-    "IMAGE": "Main Image field name in your CMS",
-    "THUMBNAIL": "Thumbnail image field name in your CMS",
-    "TAGS": "Tags field name in your CMS",
-    "CATEGORY": "Category field name in your CMS"
+    "BODY": "Body field name in the contents CMS",
+    "SUMMARY": "Summary field name in the contents CMS",
+    "IMAGE": "Main Image field name in the contents CMS",
+    "THUMBNAIL": "Thumbnail image field name in the contents CMS",
+    "TAGS": "Tags field name in the contents CMS",
+    "CATEGORY": "Category field name in the contents CMS"
   },
   "HOW_TO": {
     "=========": "==============================================================",
