@@ -1,0 +1,13 @@
+/config.json
+/jp-check_md2html.ipynb
+/jp-check_Notion_API.ipynb
+/jp-check_openai_API.ipynb
+/jp-check_webflow_API.ipynb
+/jp-GetNewTags.ipynb
+/update_category.py
+/update_features.py
+/update_tags.py
+/update_thumbnail.py
+/data.json
+.idea/
+__pycache__/
