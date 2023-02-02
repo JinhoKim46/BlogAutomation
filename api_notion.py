@@ -5,32 +5,30 @@ import requests
 
 
 class Notion:
-    def __init__(self, config):
+    def __init__(self, config, type):
         self.config = config
+        self.type = type
         self.token = self.getToken()
-        self.contentsID = self.getDatabaseID('contents')
-        self.TagsID = self.getDatabaseID('tags')
-        self.CategoryID = self.getDatabaseID('category')
+        self.databaseID = self.getDatabaseID()
         self.headers = {
             "Authorization": f"Bearer {self.token}",
             "Notion-Version": "2022-06-28",
             "Content-Type": "application/json"
         }
 
-    def readDatebase(self, db='contents', save_data=False):
-        databaseID = self.contentsID if db == 'contents' else self.TagsID if db == 'tags' else self.CategoryID
-        readUrl = f'https://api.notion.com/v1/databases/{databaseID}/query'
+    def readDatebase(self, save_data=False):
+        readUrl = f'https://api.notion.com/v1/databases/{self.databaseID}/query'
 
         res = requests.request("POST", readUrl, headers=self.headers).json()
 
         if len(res['results']) == 100:  # Max load num: 100 => deal with more than 100 pages in the database
             pageID = self.getPageID(res['results'][-1])
             payload = {"start_cursor": pageID}
-            res_extra = requests.request("POST", readUrl, json=payload, headers=self.headers).json()
+            res_extra = requests.request("POST", readUrl, json=payload, headers=self.headers).json(  )
             res['results'].extend(res_extra['results'][1:])
 
         if save_data:
-            with open(f'./{db}.json', 'w', encoding='utf8') as f:
+            with open(f'./{self.type}.json', 'w', encoding='utf8') as f:
                 json.dump(res, f, ensure_ascii=False)
 
         return res['results']
@@ -40,8 +38,8 @@ class Notion:
 
         return token
 
-    def getDatabaseID(self, db='contents'):
-        databaseID = self.config[f'{db}ID']
+    def getDatabaseID(self):
+        databaseID = self.config[f'{self.type}ID']
 
         return databaseID
 

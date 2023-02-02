@@ -6,22 +6,29 @@ import utils
 
 # Get config
 config = utils.read_config("Z:\Personal\Projects\BlogAutomation\config.json")
+
 # Get openai api
 openai = Openai(config['openai'])
+
 # Get notion api
-notion = Notion(config['notion'])
-contents = notion.readDatebase(db='contents')
-categories = notion.readDatebase(db='category')
-tags = notion.readDatebase(db='tags')
+notion_contents = Notion(config['notion'], 'contents')
+contents = notion_contents.readDatebase()
+
+notion_categories = Notion(config['notion'], 'categories')
+categories = notion_categories.readDatebase()
+
+notion_tags = Notion(config['notion'], 'tags')
+tags = notion_tags.readDatebase()
+
 # Get webflow api
 webflow_tags = Webflow(config['webflow'], 'tags')
 webflow_categories = Webflow(config['webflow'], 'categories')
 
 print("Start blog posts generation!!\n")
 for page in contents:
-    if not notion.getDone(page):
-        title = notion.getTitle(page)
-        category = notion.getCategory(page)
+    if not notion_contents.getDone(page):
+        title = notion_contents.getTitle(page)
+        category = notion_contents.getCategory(page)
 
         print(f"Blog auto-generation starts for ...\n - Title: {title}\n - Category: {category}")
         print("==============================================")
@@ -49,32 +56,32 @@ for page in contents:
         # %% Get category ID
         category_id = utils.get_category_id(categories, category)
 
-        notion.updateProperty(page['id'], "Body", 'text', body)
-        notion.updateProperty(page['id'], "Summary", 'text', summary)
-        notion.updateProperty(page['id'], "Main image", 'files', ("Image", image))
-        notion.updateProperty(page['id'], "Thumbnail", 'files', ("Thumbnail", thumbnail))
-        notion.updateProperty(page['id'], "Tags_link", 'relation', tag_ids)
-        notion.updateProperty(page['id'], "Category_link", 'relation', category_id)
-        notion.updateProperty(page['id'], "Done", 'checkbox', True)
+        notion_contents.updateProperty(page['id'], "Body", 'text', body)
+        notion_contents.updateProperty(page['id'], "Summary", 'text', summary)
+        notion_contents.updateProperty(page['id'], "Main image", 'files', ("Image", image))
+        notion_contents.updateProperty(page['id'], "Thumbnail", 'files', ("Thumbnail", thumbnail))
+        notion_contents.updateProperty(page['id'], "Tags_link", 'relation', tag_ids)
+        notion_contents.updateProperty(page['id'], "Category_link", 'relation', category_id)
+        notion_contents.updateProperty(page['id'], "Done", 'checkbox', True)
 
         print("Done!\n\n")
 
 print("Generating blog posts is done!")
 print("Start to create tags and categories in Webflow")
 for page in tags:
-    if not notion.getFeatured(page):
-        tag = notion.getName(page)
+    if not notion_tags.getFeatured(page):
+        tag = notion_tags.getName(page)
         print(f" Uploading Tag: {tag} ... ")
         item_id = webflow_tags.createItem(title=tag)
-        notion.updateProperty(page['id'], 'Webflow item ID', 'text', item_id)
-        notion.updateProperty(page['id'], "Featured", 'checkbox', True)
+        notion_tags.updateProperty(page['id'], 'Webflow item ID', 'text', item_id)
+        notion_tags.updateProperty(page['id'], "Featured", 'checkbox', True)
         print("  Done!\n")
 
 for page in categories:
-    if not notion.getFeatured(page):
-        category = notion.getName(page)
+    if not notion_categories.getFeatured(page):
+        category = notion_categories.getName(page)
         print(f" Uploading Tag: {category} ... ")
         item_id = webflow_categories.createItem(title=category)
-        notion.updateProperty(page['id'], 'Webflow item ID', 'text', item_id)
-        notion.updateProperty(page['id'], "Featured", 'checkbox', True)
+        notion_categories.updateProperty(page['id'], 'Webflow item ID', 'text', item_id)
+        notion_categories.updateProperty(page['id'], "Featured", 'checkbox', True)
         print("  Done!\n")
