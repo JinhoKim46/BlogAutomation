@@ -1,12 +1,10 @@
 import json
 import requests
 import numpy as np
-import os
 
-CONFIG_PATH = "Z:\Personal\Projects\BlogAutomation\config.json"
 class Notion:
-    def __init__(self):
-        print(os.getcwd())
+    def __init__(self, config):
+        self.config = config
         self.token = self.getToken()
         self.contentsID = self.getDatabaseID('contents')
         self.TagsID = self.getDatabaseID('tags')
@@ -23,7 +21,7 @@ class Notion:
 
         res = requests.request("POST", readUrl, headers=self.headers).json()
 
-        if len(res['results']) == 100: # Max load num: 100 => deal with more than 100 pages in the database
+        if len(res['results']) == 100:  # Max load num: 100 => deal with more than 100 pages in the database
             pageID = self.getPageID(res['results'][-1])
             payload = {"start_cursor": pageID}
             res_extra = requests.request("POST", readUrl, json=payload, headers=self.headers).json()
@@ -36,14 +34,12 @@ class Notion:
         return res['results']
 
     def getToken(self):
-        config = json.load(open(CONFIG_PATH))
-        token = config['token_notion']
+        token = self.config['token_notion']
 
         return token
 
     def getDatabaseID(self, db='contents'):
-        config = json.load(open(CONFIG_PATH))
-        databaseID = config[f'{db}ID']
+        databaseID = self.config[f'{db}ID']
 
         return databaseID
 

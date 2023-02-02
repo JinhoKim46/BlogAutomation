@@ -1,16 +1,15 @@
 import openai
 import json
 
-CONFIG_PATH = "Z:\Personal\Projects\BlogAutomation\config.json"
 
 class Openai:
-    def __init__(self):
+    def __init__(self, config):
+        self.config = config
         openai.api_key = self.getToken()
         self.model = 'text-davinci-003'
 
     def getToken(self):
-        config = json.load(open(CONFIG_PATH))
-        token = config['token_openai']
+        token = self.config['token_openai']
         return token
 
     def run(self, target, max_tokens=256, temperature=0.8, prompt=None, **kwargs):

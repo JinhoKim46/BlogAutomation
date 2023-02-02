@@ -2,17 +2,9 @@ import requests
 import json
 from markdown import markdown
 
-BODY = "Post Body"
-SUMMARY = "Post Summary"
-IMAGE = "Main Image"
-THUMBNAIL = "Thumbnail image"
-TAGS = "Tags"
-CATEGORY = "Category"
-CONFIG_PATH = "Z:\Personal\Projects\BlogAutomation\config.json"
-
-
 class Webflow:
-    def __init__(self, type="contents"):
+    def __init__(self, config, type="contents"):
+        self.config = config
         self.type = type
         self.token = self.getToken()
         self.headers = self.getHeaders()
@@ -28,9 +20,7 @@ class Webflow:
         print(f"This Webflow class is for {self.type}")
 
     def getToken(self):
-        config = json.load(open(CONFIG_PATH))
-        token = config['token_webflow']
-
+        token = self.config['token_webflow']
         return token
 
     def getHeaders(self):
@@ -48,15 +38,11 @@ class Webflow:
         return siteID
 
     def getDomain(self):
-        config = json.load(open(CONFIG_PATH))
-        domain = config['domain']
-
+        domain = self.config['domain']
         return domain
 
     def getCount(self):
-        config = json.load(open(CONFIG_PATH))
-        count = config['count']
-
+        count = self.config['count']
         return count
 
     def getSite(self):
@@ -118,7 +104,7 @@ class Webflow:
         '''
         url = f"https://api.webflow.com/collections/{self.collectionID}/items/{item_id}"
 
-        if field == IMAGE or field == THUMBNAIL:
+        if field == self.config["IMAGE"] or field == self.config["THUMBNAIL"]:
             contents = {"url": contents}
 
         payload = {"fields": {
@@ -135,12 +121,12 @@ class Webflow:
                     "name": f"{kwargs['title']}",
                     "_archived": False,
                     "_draft": False,
-                    f"{self.field[BODY]}": f"{markdown(kwargs['body'])}",
-                    f"{self.field[SUMMARY]}": f"{kwargs['summary']}",
-                    f"{self.field[IMAGE]}": {
+                    f"{self.field[self.config['BODY']]}": f"{markdown(kwargs['body'])}",
+                    f"{self.field[self.config['SUMMARY']]}": f"{kwargs['summary']}",
+                    f"{self.field[self.config['IMAGE']]}": {
                         'url': f"{kwargs['image']}"
                     },
-                    f"{self.field[THUMBNAIL]}": {
+                    f"{self.field[self.config['THUMBNAIL']]}": {
                         'url': f"{kwargs['thumbnail']}"
                     }
                 }
