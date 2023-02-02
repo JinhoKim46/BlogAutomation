@@ -7,12 +7,11 @@ import requests
 class Notion:
     def __init__(self, config):
         self.config = config
-        self.token = self.getToken()
         self.contentsID = self.getDatabaseID("contents")
         self.tagID = self.getDatabaseID("tags")
-        self.categoryID = self.getDatabaseID("categories")
+        self.categoryID = self.getDatabaseID("category")
         self.headers = {
-            "Authorization": f"Bearer {self.token}",
+            "Authorization": f"Bearer {self.getToken()}",
             "Notion-Version": "2022-06-28",
             "Content-Type": "application/json"
         }
