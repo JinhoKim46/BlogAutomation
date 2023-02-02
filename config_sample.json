@@ -1,19 +1,32 @@
 {
-  "token_notion": "Your Notion Token",
-  "contentsID": "Notion Database contentsID",
-  "tagsID": "Notion Database tagsID",
-  "categoryID": "Notion Database categoryID",
-  "token_openAI": "Your OpenAI Token",
-  "token_webflow": "Your Webflow Token",
-  "domain": "Your Webflow Domain",
-  "count": 2,
-
-  "=========": "==============================================================",
-  "How_to_get_APIs": {
-    "Notion": "https://developers.notion.com/docs/create-a-notion-integration",
-    "openAI": "https://beta.openai.com/account/api-keys",
-    "Webflow": "Setting -> Integration -> API generation"
+  "notion": {
+    "token_notion": "Your Notion Token",
+    "contentsID": "Notion Database contentsID",
+    "tagsID": "Notion Database tagsID",
+    "categoryID": "Notion Database categoryID"
   },
-  "_count": "How many items to be uploaded",
-  "==========": "=============================================================="
+  "openai": {
+    "token_openAI": "Your OpenAI Token"
+  },
+  "webflow": {
+    "token_webflow": "Your Webflow Token",
+    "domain": "Your Webflow Domain",
+    "count": 2,
+    "BODY": "Body field name in your CMS",
+    "SUMMARY": "Summary field name in your CMS",
+    "IMAGE": "Main Image field name in your CMS",
+    "THUMBNAIL": "Thumbnail image field name in your CMS",
+    "TAGS": "Tags field name in your CMS",
+    "CATEGORY": "Category field name in your CMS"
+  },
+  "HOW_TO": {
+    "=========": "==============================================================",
+    "How_to_get_APIs": {
+      "Notion": "https://developers.notion.com/docs/create-a-notion-integration",
+      "OpenAI": "https://beta.openai.com/account/api-keys",
+      "Webflow": "Setting -> Integration -> API generation"
+    },
+    "_count": "How many items to be uploaded",
+    "==========": "=============================================================="
+  }
 }
