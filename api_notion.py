@@ -1,6 +1,8 @@
 import json
-import requests
+
 import numpy as np
+import requests
+
 
 class Notion:
     def __init__(self, config):

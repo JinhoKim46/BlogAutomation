@@ -1,6 +1,4 @@
 import openai
-import json
-
 
 class Openai:
     def __init__(self, config):
