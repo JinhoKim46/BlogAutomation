@@ -1,9 +1,5 @@
 /config.json
-/jp-check_md2html.ipynb
-/jp-check_Notion_API.ipynb
-/jp-check_openai_API.ipynb
-/jp-check_webflow_API.ipynb
-/jp-GetNewTags.ipynb
+*.ipynb
 /update_category.py
 /update_features.py
 /update_tags.py
