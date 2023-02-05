@@ -1,11 +1,14 @@
 from api_notion import Notion
 from api_openai import Openai
 from api_webflow import Webflow
-
-import utils
+import json
+from pathlib import  Path
 
 # Get config
-config = utils.read_config("Z:\Personal\Projects\BlogAutomation\config.json")
+config_path = Path(r"c:\Users\z0048drc\Documents\Github\BlogAutomation")
+if input(f"Is this path correct?\n{config_path} [y/n]: ") == 'n':
+    config_path = Path(input("Input a config path: "))
+config = json.load(open(config_path/ 'config.json'))
 
 # Get openai api
 openai = Openai(config['openai'])
