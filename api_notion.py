@@ -22,10 +22,12 @@ class Notion:
 
         res = requests.request("POST", readUrl, headers=self.headers).json()
 
-        if len(res['results']) == 100:  # Max load num: 100 => deal with more than 100 pages in the database
+        while True:
             pageID = self.getPageID(res['results'][-1])
             payload = {"start_cursor": pageID}
             res_extra = requests.request("POST", readUrl, json=payload, headers=self.headers).json()
+            if len(res_extra['results']) == 1: # when only the last pageID exists in the list
+                break
             res['results'].extend(res_extra['results'][1:])
 
         if save_data:
